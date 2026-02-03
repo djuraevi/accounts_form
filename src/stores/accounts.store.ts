@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, watch } from 'vue'
-import type { Account } from '@/types/account'
+import type { Account } from '@/types/accounts'
 
 const STORAGE_KEY = 'accounts'
 

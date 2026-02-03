@@ -1,18 +1,18 @@
-import type { AccountType } from '@/types/account'
+import type { AccountType } from '@/types/accounts'
 
-export interface ValidationErrors {
+export interface AccountValidationErrors {
   labels?: string
   login?: string
   password?: string
 }
 
-export function validateAccountFields(params: {
+export function validateAccount(params: {
   labelsInput: string
   type: AccountType
   login: string
   password: string
-}): ValidationErrors {
-  const errors: ValidationErrors = {}
+}): AccountValidationErrors {
+  const errors: AccountValidationErrors = {}
 
   if (params.labelsInput.length > 50) {
     errors.labels = 'Максимум 50 символов'

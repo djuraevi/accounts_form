@@ -1,4 +1,4 @@
-import type { LabelItem } from '@/types/account'
+import type { LabelItem } from '@/types/accounts'
 
 export function parseLabels(input: string): LabelItem[] {
   return input

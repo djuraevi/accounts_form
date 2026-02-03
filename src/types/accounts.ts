@@ -10,8 +10,4 @@ export interface Account {
   type: AccountType
   login: string
   password: string | null
-  errors: {
-    login?: boolean
-    password?: boolean
-  }
 }

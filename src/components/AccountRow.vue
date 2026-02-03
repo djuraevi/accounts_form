@@ -3,14 +3,14 @@ import { Delete } from '@element-plus/icons-vue'
 import { toRef } from 'vue'
 import { useAccountForm } from '@/composables/useAccountForm'
 import { parseLabels } from '@/utils/labelParser'
-import type { Account } from '@/types/account'
+import type { Account } from '@/types/accounts'
 import { useAccountValidation } from '@/composables/useAccountValidation'
 
 const props = defineProps<{
   account: Account
 }>()
 
-const { errors, validate } = useAccountValidation()
+const { errors, runValidation } = useAccountValidation()
 
 const isEmptyAccount = () => {
   return (
@@ -27,7 +27,7 @@ const validateAndSave = () => {
     return
   }
 
-  const isValid = validate({
+  const isValid = runValidation({
     labelsInput: form.labelsInput,
     type: form.type,
     login: form.login,

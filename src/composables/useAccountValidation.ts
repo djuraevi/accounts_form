@@ -1,24 +1,31 @@
 import { reactive } from 'vue'
-import { validateAccountFields } from '@/utils/validateAccount'
-import type { AccountType } from '@/types/account'
+import { validateAccount } from '@/utils/validateAccount'
+import type { AccountType } from '@/types/accounts'
+import type { AccountValidationErrors } from '@/utils/validateAccount'
+
 
 export function useAccountValidation() {
-  const errors = reactive<{
-    labels?: string
-    login?: string
-    password?: string
-  }>({})
+  const errors = reactive<AccountValidationErrors>({})
 
-  const validate = (params: {
+  type ErrorKey = keyof typeof errors
+
+  const runValidation = (params: {
     labelsInput: string
     type: AccountType
     login: string
     password: string
-  }) => {
-    const result = validateAccountFields(params)
+  }): boolean => {
+    const rawParams = {
+      labelsInput: params.labelsInput,
+      type: params.type,
+      login: params.login,
+      password: params.password,
+    }
 
-    Object.keys(errors).forEach(k => {
-      errors[k] = undefined
+    const result = validateAccount(rawParams)
+
+    ;(Object.keys(errors) as ErrorKey[]).forEach((key) => {
+      errors[key] = undefined
     })
 
     if (Object.keys(result).length) {
@@ -29,8 +36,9 @@ export function useAccountValidation() {
     return true
   }
 
+
   return {
     errors,
-    validate,
+    runValidation,
   }
 }

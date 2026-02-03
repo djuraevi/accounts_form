@@ -1,5 +1,5 @@
 import { reactive, watch, type Ref } from 'vue'
-import type { Account, AccountType } from '@/types/account'
+import type { Account, AccountType } from '@/types/accounts'
 
 export function useAccountForm(account: Ref<Account>) {
   const form = reactive({
@@ -17,7 +17,7 @@ export function useAccountForm(account: Ref<Account>) {
   watch(
     account,
     (acc) => {
-      form.labelsInput = acc.labels.map(l => l.text).join('; ')
+      form.labelsInput = acc.labels.map((l: { text: string }) => l.text).join('; ')
       form.type = acc.type
       form.login = acc.login
       form.password = acc.password ?? ''
