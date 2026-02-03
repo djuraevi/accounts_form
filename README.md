@@ -1,48 +1,59 @@
-# accounts_form
+# Accounts Management Form
 
-This template should help get you started developing with Vue 3 in Vite.
+Тестовое задание для позиции **Vue Frontend Developer**.
 
-## Recommended IDE Setup
+Реализована форма управления учетными записями с возможностью добавления,
+редактирования, валидации и сохранения данных.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+---
 
-## Recommended Browser Setup
+## Стек технологий
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+- **Vue.js 3** (Composition API)
+- **TypeScript**
+- **Pinia** — управление состоянием
+- **Element Plus** — UI-библиотека
+- **Vite** — сборка проекта
 
-## Type Support for `.vue` Imports in TS
+---
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Функциональность
 
-## Customize configuration
+### Управление учетными записями
+- Добавление новой учетной записи по кнопке `+`
+- Удаление учетной записи
+- Отображение списка учетных записей
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+### Поля учетной записи
+- **Метка**
+    - необязательное поле
+    - ввод через `;`
+    - максимальная длина — 50 символов
+    - преобразуется в массив объектов `{ text: string }`
+- **Тип записи**
+    - `LOCAL` — с отображением поля пароля
+    - `LDAP` — поле пароля скрывается и сохраняется как `null`
+- **Логин**
+    - обязательное поле
+    - максимальная длина — 100 символов
+- **Пароль**
+    - обязательное поле для типа `LOCAL`
+    - максимальная длина — 100 символов
 
-## Project Setup
+### Валидация
+- Выполняется:
+    - для текстовых полей — по `blur`
+    - для select — по `change`
+- При ошибке поле подсвечивается красной рамкой
+- Невалидные данные не сохраняются
 
-```sh
+### Сохранение данных
+- Учетные записи хранятся в **Pinia store**
+- Данные сохраняются в `localStorage`
+- При перезагрузке страницы состояние восстанавливается
+
+---
+## Запуск проекта
+```bash
 pnpm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 pnpm dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-pnpm build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-pnpm lint
-```
