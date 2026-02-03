@@ -31,10 +31,16 @@ export const useAccountsStore = defineStore('accounts', () => {
     }
   }
 
+  const isPersistableAccount = (account: Account) => {
+    return account.login.trim().length > 0
+  }
+
+
   watch(
     accounts,
     (val) => {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(val))
+      const filtered = val.filter(isPersistableAccount)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered))
     },
     { deep: true }
   )

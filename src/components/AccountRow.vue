@@ -1,13 +1,44 @@
 <script setup lang="ts">
 import { Delete } from '@element-plus/icons-vue'
-import { toRef, computed } from 'vue'
+import { toRef } from 'vue'
 import { useAccountForm } from '@/composables/useAccountForm'
 import { parseLabels } from '@/utils/labelParser'
 import type { Account } from '@/types/account'
+import { useAccountValidation } from '@/composables/useAccountValidation'
 
 const props = defineProps<{
   account: Account
 }>()
+
+const { errors, validate } = useAccountValidation()
+
+const isEmptyAccount = () => {
+  return (
+    !form.labelsInput.trim() &&
+    !form.login.trim() &&
+    !form.password.trim()
+  )
+}
+
+
+const validateAndSave = () => {
+  if (isEmptyAccount()) {
+    emit('remove', props.account.id)
+    return
+  }
+
+  const isValid = validate({
+    labelsInput: form.labelsInput,
+    type: form.type,
+    login: form.login,
+    password: form.password,
+  })
+
+  if (isValid) {
+    save()
+  }
+}
+
 
 const emit = defineEmits<{
   (e: 'update', account: Account): void
@@ -32,17 +63,17 @@ const save = () => {
 
 <template>
   <el-card class="account-row" shadow="never">
-    <el-form
-      label-position="top"
-      class="account-row__form"
-    >
+    <el-form label-position="top">
       <el-row :gutter="12" align="bottom">
         <el-col :span="6">
-          <el-form-item label="Метки">
+          <el-form-item
+            label="Метки"
+            :error="errors.labels"
+          >
             <el-input
               v-model="form.labelsInput"
               placeholder="Например: admin; main"
-              @blur="save"
+              @blur="validateAndSave"
             />
           </el-form-item>
         </el-col>
@@ -51,7 +82,7 @@ const save = () => {
           <el-form-item label="Тип записи">
             <el-select
               v-model="form.type"
-              @change="save"
+              @change="validateAndSave"
             >
               <el-option
                 v-for="option in typeOptions"
@@ -64,11 +95,14 @@ const save = () => {
         </el-col>
 
         <el-col :span="6">
-          <el-form-item label="Логин">
+          <el-form-item
+            label="Логин"
+            :error="errors.login"
+          >
             <el-input
               v-model="form.login"
               placeholder="Введите логин"
-              @blur="save"
+              @blur="validateAndSave"
             />
           </el-form-item>
         </el-col>
@@ -77,12 +111,13 @@ const save = () => {
           <el-form-item
             v-if="form.type === 'LOCAL'"
             label="Пароль"
+            :error="errors.password"
           >
             <el-input
               v-model="form.password"
               placeholder="Введите пароль"
               show-password
-              @blur="save"
+              @blur="validateAndSave"
             />
           </el-form-item>
         </el-col>
