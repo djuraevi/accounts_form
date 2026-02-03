@@ -1,20 +1,24 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useAccountsStore } from '@/stores/accounts.store'
 import AccountsHeader from './AccountsHeader.vue'
 import AccountRow from './AccountRow.vue'
-import AccountsDataView from './AccountsDataView.vue'
 
 const store = useAccountsStore()
+
+onMounted(() => {
+  store.load()
+})
 </script>
 
 <template>
-  <AccountsHeader />
+  <AccountsHeader @add="store.addAccount" />
 
   <AccountRow
     v-for="account in store.accounts"
     :key="account.id"
     :account="account"
+    @update="store.updateAccount"
+    @remove="store.removeAccount"
   />
-
-  <AccountsDataView />
 </template>
